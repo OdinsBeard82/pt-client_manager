@@ -25,5 +25,6 @@ def create_client(client: ClientCreate, db: Session = Depends(get_db)):
     db.refresh(new_client)
     return {"message": "Client information received successfully", "client": new_client}
 
-def get_clients(db: Session):
+@app.get("/clients/")
+def get_clients(db: Session = Depends(get_db)):
     return db.query(Client).all()
