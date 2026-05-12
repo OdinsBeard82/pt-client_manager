@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from database import Base, engine, get_db
 from model import Client
+from sqlalchemy.orm import Session
 
 Base.metadata.create_all(bind=engine)
 
@@ -16,8 +17,10 @@ class ClientCreate(BaseModel):
     package: str
     sessions_count: int
 
-hold_clients_info = []
 @app.post("/clients/")
 def create_client(client: ClientCreate, db: Session = Depends(get_db)):
-    hold_clients_info.append(client)
-    return {"message": "Client information received successfully", "client": client}
+    new_client = Client(**client.model_dump())
+    db.add(new_client)
+    db.commit()
+    db.refresh(new_client)
+    return {"message": "Client information received successfully", "client": new_client}
