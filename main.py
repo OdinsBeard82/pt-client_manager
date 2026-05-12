@@ -1,10 +1,18 @@
 from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from database import Base, engine, get_db
 from model import Client
 from sqlalchemy.orm import Session
 
 Base.metadata.create_all(bind=engine)
+
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "http://localhost:8080",
+    ]
 
 app = FastAPI()
 @app.get("/")
@@ -28,3 +36,11 @@ def create_client(client: ClientCreate, db: Session = Depends(get_db)):
 @app.get("/clients/")
 def get_clients(db: Session = Depends(get_db)):
     return db.query(Client).all()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
+)
