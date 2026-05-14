@@ -4,6 +4,7 @@ from pydantic import BaseModel, ConfigDict
 from database import Base, engine, get_db
 from model import Client
 from sqlalchemy.orm import Session
+from typing import Optional
 
 Base.metadata.create_all(bind=engine)
 
@@ -35,6 +36,13 @@ class ClientRead(BaseModel):
     package: str
     sessions_count: int
 
+class ClientUpdate(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    phone_number: Optional[str] = None
+    package: Optional[str] = None
+    sessions_count: Optional[int] = None
+
 @app.post("/clients/", response_model=ClientRead)
 def create_client(client: ClientCreate, db: Session = Depends(get_db)):
     new_client = Client(**client.model_dump())
@@ -60,3 +68,18 @@ def get_client(client_id: int, db: Session = Depends(get_db)):
     if client is None:
         raise HTTPException(status_code=404, detail="Client not found")
     return client
+
+
+@app.put("/clients/{client_id}", response_model=ClientRead)
+def update_client(client_id: int, client: ClientUpdate, db: Session = Depends(get_db)):
+    clientUpdate = db.query(Client).filter(Client.id == client_id).first()
+    if clientUpdate is None:
+        raise HTTPException(status_code=404, detail="client update error")
+    if client.name is not None: clientUpdate.name = client.name
+    if client.email is not None: clientUpdate.email = client.email
+    if client.phone_number is not None: clientUpdate.phone_number = client.phone_number
+    if client.package is not None: clientUpdate.package = client.package
+    if client.sessions_count is not None: clientUpdate.sessions_count = client.sessions_count
+    db.commit()
+    db.refresh(clientUpdate)
+    return clientUpdate
