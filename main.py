@@ -72,14 +72,24 @@ def get_client(client_id: int, db: Session = Depends(get_db)):
 
 @app.put("/clients/{client_id}", response_model=ClientRead)
 def update_client(client_id: int, client: ClientUpdate, db: Session = Depends(get_db)):
-    clientUpdate = db.query(Client).filter(Client.id == client_id).first()
-    if clientUpdate is None:
-        raise HTTPException(status_code=404, detail="client update error")
-    if client.name is not None: clientUpdate.name = client.name
-    if client.email is not None: clientUpdate.email = client.email
-    if client.phone_number is not None: clientUpdate.phone_number = client.phone_number
-    if client.package is not None: clientUpdate.package = client.package
-    if client.sessions_count is not None: clientUpdate.sessions_count = client.sessions_count
+    client_Update = db.query(Client).filter(Client.id == client_id).first()
+    if client_Update is None:
+        raise HTTPException(status_code=404, detail="Client not found")
+    if client.name is not None: client_Update.name = client.name
+    if client.email is not None: client_Update.email = client.email
+    if client.phone_number is not None: client_Update.phone_number = client.phone_number
+    if client.package is not None: client_Update.package = client.package
+    if client.sessions_count is not None: client_Update.sessions_count = client.sessions_count
     db.commit()
-    db.refresh(clientUpdate)
-    return clientUpdate
+    db.refresh(client_Update)
+    return client_Update
+
+@app.delete("/clients/{client_id}", response_model=ClientRead)
+def delete_client(client_id: int, db: Session = Depends(get_db)):
+    client_Delete = db.query(Client).filter(Client.id == client_id).first()
+    if client_Delete is None:
+        raise HTTPException(status_code=404, detail="Client not found")
+    db.delete(client_Delete)
+    db.commit()
+    return client_Delete
+
