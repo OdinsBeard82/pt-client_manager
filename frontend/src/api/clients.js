@@ -49,4 +49,14 @@ export async function updateClient(id, updates) {
   return response.json();
 }
 
-deleteClient()
+export async function deleteClient(id) {
+    const response = await fetch(`${API_BASE_URL}/clients/${id}`, {
+        method: "DELETE",
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to delete client");
+    }
+
+    return response.json();
+}
