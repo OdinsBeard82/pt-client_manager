@@ -33,7 +33,7 @@ export async function createClient(clientData) {
     });  
     
     if (!response.ok) {
-        throw new Error("Failed to create clients");
+        throw new Error("Failed to create client");
     }
     
     return response.json();
