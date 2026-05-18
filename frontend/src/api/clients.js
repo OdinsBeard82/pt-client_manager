@@ -10,6 +10,16 @@ export async function getClients() {
   return response.json();
 }
 
+export async function getClient(id) {
+  const response = await fetch(`${API_BASE_URL}/clients/${id}`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch client");
+  }
+
+  return response.json();
+}
+
 
 export async function createClient(clientData) {
     const jsonString = JSON.stringify(clientData);
@@ -59,4 +69,4 @@ export async function deleteClient(id) {
     }
 
     return response.json();
-}
+};
