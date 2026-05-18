@@ -23,7 +23,7 @@ export async function createClient(clientData) {
     });  
     
     if (!response.ok) {
-        throw new Error("Failed to crerate clients");
+        throw new Error("Failed to create clients");
     }
     
     return response.json();
@@ -31,5 +31,22 @@ export async function createClient(clientData) {
 
 
 
-updateClient()
+export async function updateClient(id, updates) {
+  const jsonString = JSON.stringify(updates);
+
+  const response = await fetch(`${API_BASE_URL}/clients/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: jsonString,
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update client");
+  }
+
+  return response.json();
+}
+
 deleteClient()
