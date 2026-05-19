@@ -30,5 +30,29 @@ function ClientList() {
           clientData()
 
   }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  } else if (error) {
+    return <p>{error}</p>;
+  } 
+  return (
+    <div>
+      <h2>Clients</h2>
+      {clients.length === 0 ? (
+        <p>No clients yet</p>
+      ) : (
+        <ul>
+          {clients.map((client) => (
+            <li key={client.id}>{client.name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+        
 }
+export default ClientList;
+           
+
 
