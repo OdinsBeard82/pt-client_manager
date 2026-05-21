@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getClients } from "../api/clients";
+import ClientItem from "./clientItem";
 
 
 
@@ -44,7 +45,7 @@ function ClientList() {
       ) : (
         <ul>
           {clients.map((client) => (
-            <li key={client.id}>{client.name}</li>
+            <ClientItem key={client.id} client = {client}></ClientItem>
           ))}
         </ul>
       )}
