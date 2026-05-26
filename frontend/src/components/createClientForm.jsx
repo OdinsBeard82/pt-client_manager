@@ -4,6 +4,9 @@ import { useState } from "react"
 function CreateClientForm({onClientCreated}) {
 
     const [formValue, setFormValue] = useState({ name: "", email: "", phone_number: "", package: "", sessions_count: 0 })
+    const [error, setError] = useState("");
+    const [hasError, setHasError] = useState(false);
+    
 function makeHandleChange(field) {
   return function (event) {
     const value = event.target.value;
@@ -16,7 +19,28 @@ function makeHandleChange(field) {
 }
 
     async function handleSubmit(event) {
-  event.preventDefault();
+        event.preventDefault();
+        if (!formValue.name.trim()) {
+            setError('Name is required.');
+            return 
+        }
+        if (!formValue.email.trim()) {
+            setError('Email is required.');
+            return
+        }
+        if (!formValue.phone_number.trim()) {
+            setError('Number is required.');
+            return
+        }
+        if (!formValue.package.trim()) {
+            setError('Package is required.');
+            return
+        }
+        if (formValue.sessions_count < 0) {
+            setError('Sessions is required')
+            return
+        }
+
   try {
     const payload = {
       ...formValue,
