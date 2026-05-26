@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getClients } from "../api/clients";
 import ClientItem from "./clientItem";
 import CreateClientForm from "./createClientForm";
@@ -7,7 +7,7 @@ import CreateClientForm from "./createClientForm";
 
 function ClientList() {
     const [clients, setClients] = useState([]);
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     function handleClientCreated(newClient) {
@@ -15,10 +15,6 @@ function ClientList() {
     }
 
     useEffect(() => {
-        setLoading(true);
-        setError("");
-        
-        
         async function clientData() {
         try {
         const data = await getClients();
