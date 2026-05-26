@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getClients } from "../api/clients";
 import ClientItem from "./clientItem";
+import CreateClientForm from "./createClientForm";
 
 
 
@@ -8,6 +9,10 @@ function ClientList() {
     const [clients, setClients] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    function handleClientCreated(newClient) {
+      setClients((prevClients) => [newClient, ...prevClients]);
+    }
 
     useEffect(() => {
         setLoading(true);
@@ -39,6 +44,7 @@ function ClientList() {
   } 
   return (
     <div>
+      <CreateClientForm onClientCreated={handleClientCreated} />
       <h2>Clients</h2>
       {clients.length === 0 ? (
         <p>No clients yet</p>
