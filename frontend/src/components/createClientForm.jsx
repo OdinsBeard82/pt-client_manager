@@ -5,7 +5,6 @@ function CreateClientForm({onClientCreated}) {
 
     const [formValue, setFormValue] = useState({ name: "", email: "", phone_number: "", package: "", sessions_count: 0 })
     const [error, setError] = useState("");
-    const [hasError, setHasError] = useState(false);
     
 function makeHandleChange(field) {
   return function (event) {
@@ -37,9 +36,11 @@ function makeHandleChange(field) {
             return
         }
         if (formValue.sessions_count < 0) {
-            setError('Sessions is required')
+            setError('Sessions count must be 0 or more.')
             return
-        }
+        } 
+
+        setError('');
 
   try {
     const payload = {
@@ -51,12 +52,13 @@ function makeHandleChange(field) {
     onClientCreated?.(newClient);
     setFormValue({ name: "", email: "", phone_number: "", package: "", sessions_count: 0 });
   } catch (error) {
-    console.error(error);
+    setError("Failed to create client...")
   }
 }
     return(
     <div>
         <h3>Add New Client</h3>
+        {error && <p>{error}</p>}
         <form onSubmit={handleSubmit}>
           <input type="email"placeholder="email" value={formValue.email} onChange={makeHandleChange('email')}/>
           <input type="text" placeholder="name" value={formValue.name} onChange={makeHandleChange('name')}/>
