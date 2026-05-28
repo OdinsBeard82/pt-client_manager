@@ -1,4 +1,5 @@
 import { createClient } from "../api/clients";
+import "./CreateClientForm.css";
 import { useState } from "react"
 
 function CreateClientForm({onClientCreated}) {
@@ -63,10 +64,11 @@ function makeHandleChange(field) {
 }
 }
     return(
-    <div>
-        <h3>Add New Client</h3>
-        {error && <p>{error}</p>}
-        <form onSubmit={handleSubmit}> 
+    <div className="create-client-form">
+      <h3>Add New Client</h3>
+      {error && <p>{error}</p>}
+      <form onSubmit={handleSubmit}> 
+        
           <label htmlFor="email">Email:</label>
           <input required type="email"placeholder="email"id="email" value={formValue.email} onChange={makeHandleChange('email')}/>
 
