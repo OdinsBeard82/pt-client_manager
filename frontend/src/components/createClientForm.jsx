@@ -59,7 +59,10 @@ function makeHandleChange(field) {
     setError("Failed to create client...")
 
     setSubmitting(false);
-  }
+    
+  } finally {
+    setSubmitting(false);
+}
 }
     return(
     <div>
