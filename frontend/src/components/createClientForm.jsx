@@ -5,6 +5,7 @@ function CreateClientForm({onClientCreated}) {
 
     const [formValue, setFormValue] = useState({ name: "", email: "", phone_number: "", package: "", sessions_count: 0 })
     const [error, setError] = useState("");
+    const [submitting, setSubmitting] = useState(false);
     
 function makeHandleChange(field) {
   return function (event) {
@@ -42,6 +43,8 @@ function makeHandleChange(field) {
 
         setError('');
 
+        setSubmitting(true);
+
   try {
     const payload = {
       ...formValue,
@@ -51,8 +54,11 @@ function makeHandleChange(field) {
     const newClient = await createClient(payload);
     onClientCreated?.(newClient);
     setFormValue({ name: "", email: "", phone_number: "", package: "", sessions_count: 0 });
+    setSubmitting(false);
   } catch (error) {
     setError("Failed to create client...")
+
+    setSubmitting(false);
   }
 }
     return(
@@ -65,11 +71,11 @@ function makeHandleChange(field) {
           <input type="text" placeholder="phone_number" value={formValue.phone_number} onChange={makeHandleChange('phone_number')}/>
           <input type="text" placeholder="package" value={formValue.package} onChange={makeHandleChange('package')}/>
           <input type="number" placeholder="sessions_count" value={formValue.sessions_count} onChange={makeHandleChange('sessions_count')}/>
-          <button type="submit">Submit</button>
+          <button type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit"}</button>
         </form>
-
-        
     </div>
+
+    
 
     )
 
