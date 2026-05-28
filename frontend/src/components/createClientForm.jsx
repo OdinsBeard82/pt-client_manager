@@ -54,12 +54,10 @@ function makeHandleChange(field) {
     const newClient = await createClient(payload);
     onClientCreated?.(newClient);
     setFormValue({ name: "", email: "", phone_number: "", package: "", sessions_count: 0 });
-    setSubmitting(false);
   } catch (error) {
     setError("Failed to create client...")
 
-    setSubmitting(false);
-    
+
   } finally {
     setSubmitting(false);
 }
@@ -68,12 +66,22 @@ function makeHandleChange(field) {
     <div>
         <h3>Add New Client</h3>
         {error && <p>{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <input type="email"placeholder="email" value={formValue.email} onChange={makeHandleChange('email')}/>
-          <input type="text" placeholder="name" value={formValue.name} onChange={makeHandleChange('name')}/>
-          <input type="text" placeholder="phone_number" value={formValue.phone_number} onChange={makeHandleChange('phone_number')}/>
-          <input type="text" placeholder="package" value={formValue.package} onChange={makeHandleChange('package')}/>
-          <input type="number" placeholder="sessions_count" value={formValue.sessions_count} onChange={makeHandleChange('sessions_count')}/>
+        <form onSubmit={handleSubmit}> 
+          <label htmlFor="email">Email:</label>
+          <input required type="email"placeholder="email"id="email" value={formValue.email} onChange={makeHandleChange('email')}/>
+
+          <label htmlFor="name">name:</label>
+          <input required type="text" placeholder="name" id="name" value={formValue.name} onChange={makeHandleChange('name')}/>
+
+          <label htmlFor="phone_number">Phone number:</label>
+          <input required type="text" id="phone_number" placeholder="phone_number" value={formValue.phone_number} onChange={makeHandleChange('phone_number')}/>
+
+          <label htmlFor="package">Package:</label>
+          <input required type="text" id="package" placeholder="package" value={formValue.package} onChange={makeHandleChange('package')}/>
+
+          <label htmlFor="sessions_count">sessions count:</label>
+          <input required type="number" min="0" id="sessions_count" placeholder="sessions_count" value={formValue.sessions_count} onChange={makeHandleChange('sessions_count')}/>
+          
           <button type="submit" disabled={submitting}>{submitting ? "Submitting..." : "Submit"}</button>
         </form>
     </div>
