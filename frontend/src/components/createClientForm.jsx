@@ -7,6 +7,7 @@ function CreateClientForm({onClientCreated}) {
     const [formValue, setFormValue] = useState({ name: "", email: "", phone_number: "", package: "", sessions_count: 0 })
     const [error, setError] = useState("");
     const [submitting, setSubmitting] = useState(false);
+    const [success, setSuccess] = useState(false);
     
 function makeHandleChange(field) {
   return function (event) {
@@ -55,6 +56,13 @@ function makeHandleChange(field) {
     const newClient = await createClient(payload);
     onClientCreated?.(newClient);
     setFormValue({ name: "", email: "", phone_number: "", package: "", sessions_count: 0 });
+    setSuccess('Client created successfully!')
+    useEffect(() => {
+  if (success) {
+    const timer = setTimeout(() => setSuccess(""), 3000);
+    return () => clearTimeout(timer);
+  }
+}, [success]);
   } catch (error) {
     setError("Failed to create client...")
 
