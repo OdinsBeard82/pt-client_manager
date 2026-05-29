@@ -1,13 +1,20 @@
 import { createClient } from "../api/clients";
 import "./CreateClientForm.css";
-import { useState } from "react"
+import { useState, useEffect } from "react";
 
 function CreateClientForm({onClientCreated}) {
 
     const [formValue, setFormValue] = useState({ name: "", email: "", phone_number: "", package: "", sessions_count: 0 })
     const [error, setError] = useState("");
     const [submitting, setSubmitting] = useState(false);
-    const [success, setSuccess] = useState(false);
+    const [success, setSuccess] = useState("");
+
+    useEffect(() => {
+        if (success) {
+            const timer = setTimeout(() => setSuccess(""), 3000);
+            return () => clearTimeout(timer);
+  }
+}, [success]);
     
 function makeHandleChange(field) {
   return function (event) {
@@ -57,14 +64,10 @@ function makeHandleChange(field) {
     onClientCreated?.(newClient);
     setFormValue({ name: "", email: "", phone_number: "", package: "", sessions_count: 0 });
     setSuccess('Client created successfully!')
-    useEffect(() => {
-  if (success) {
-    const timer = setTimeout(() => setSuccess(""), 3000);
-    return () => clearTimeout(timer);
-  }
-}, [success]);
+
   } catch (error) {
     setError("Failed to create client...")
+    console.log(error)
 
 
   } finally {
@@ -74,6 +77,7 @@ function makeHandleChange(field) {
     return(
     <div className="create-client-form">
       <h3>Add New Client</h3>
+      {success && <p className="success">{success}</p>}
       {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}> 
         
