@@ -13,8 +13,8 @@ function CreateClientForm({onClientCreated}) {
         if (success) {
             const timer = setTimeout(() => setSuccess(""), 3000);
             return () => clearTimeout(timer);
-  }
-}, [success]);
+      }
+    }, [success]);
     
 function makeHandleChange(field) {
   return function (event) {
@@ -54,26 +54,23 @@ function makeHandleChange(field) {
 
         setSubmitting(true);
 
-  try {
-    const payload = {
-      ...formValue,
-      sessions_count: Number(formValue.sessions_count),
-    };
+        try {
+            const payload = {
+                ...formValue,
+                sessions_count: Number(formValue.sessions_count),
+            };
 
-    const newClient = await createClient(payload);
-    onClientCreated?.(newClient);
-    setFormValue({ name: "", email: "", phone_number: "", package: "", sessions_count: 0 });
-    setSuccess('Client created successfully!')
-
-  } catch (error) {
-    setError("Failed to create client...")
-    console.log(error)
-
-
-  } finally {
-    setSubmitting(false);
-}
-}
+            const newClient = await createClient(payload);
+            onClientCreated?.(newClient);
+            setFormValue({ name: "", email: "", phone_number: "", package: "", sessions_count: 0 });
+            setSuccess("Client created successfully!");
+        } catch (error) {
+            setError("Failed to create client...");
+            console.log(error);
+        } finally {
+            setSubmitting(false);
+        }
+    }
     return(
     <div className="create-client-form">
       <h3>Add New Client</h3>
