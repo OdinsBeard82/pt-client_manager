@@ -1,6 +1,7 @@
-function ClientItem({ client }) {
+function ClientItem({ client, onDelete }) {
 return (
     <div>
+        <button onClick={() => { onDelete(client.id) }}>Delete client</button>
         <h3>{client.name}</h3>
         <p>Email: {client.email}</p>
         <p>Phone: {client.phone_number}</p>
