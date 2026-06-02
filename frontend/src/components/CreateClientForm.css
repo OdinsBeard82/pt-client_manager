@@ -40,7 +40,14 @@
 }
 
 .create-client-form p {
-  color: #d32f2f;
   margin-bottom: 1rem;
   font-weight: 500;
+}
+
+.create-client-form .success {
+  color: #2e7d32;
+}
+
+.create-client-form p:not(.success) {
+  color: #d32f2f;
 }
