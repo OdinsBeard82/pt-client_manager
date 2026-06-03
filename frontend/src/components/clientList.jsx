@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getClients } from "../api/clients";
+import { getClients, deleteClient } from "../api/clients";
 import ClientItem from "./clientItem";
 import CreateClientForm from "./createClientForm";
 
@@ -33,6 +33,16 @@ function ClientList() {
 
   }, []);
 
+    async function handleDeleteClient(clientId) {
+        setError("")
+    try {
+    await deleteClient(clientId)
+    setClients((prevClients) => prevClients.filter((client) => client.id !== clientId));
+    } catch (error) {
+        setError(error.message || "Failed to delete client")
+    }
+}
+        
   if (loading) {
     return <p>Loading...</p>;
   } else if (error) {
@@ -47,15 +57,13 @@ function ClientList() {
       ) : (
         <ul>
           {clients.map((client) => (
-            <ClientItem key={client.id} client = {client}></ClientItem>
+            <ClientItem onDelete = {handleDeleteClient} key={client.id} client = {client}></ClientItem>
           ))}
         </ul>
       )}
     </div>
   );
-        
+  
 }
 export default ClientList;
            
-
-
