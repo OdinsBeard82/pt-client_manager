@@ -1,7 +1,13 @@
 function ClientItem({ client, onDelete }) {
+    function confirm1() {
+        if (window.confirm(`Delete ${client.name}?`)) {
+            onDelete(client.id);
+        }
+    }
+    
 return (
     <div>
-        <button onClick={() => { onDelete(client.id) }}>Delete client</button>
+        <button onClick={confirm1}>Delete client</button>
         <h3>{client.name}</h3>
         <p>Email: {client.email}</p>
         <p>Phone: {client.phone_number}</p>
