@@ -1,13 +1,15 @@
 import { createClient } from "../api/clients";
 import "./CreateClientForm.css";
 import { useState, useEffect } from "react";
+import  useFormFields from "../hooks/useFormFields";
 
 function CreateClientForm({onClientCreated}) {
 
-    const [formValue, setFormValue] = useState({ name: "", email: "", phone_number: "", package: "", sessions_count: 0 })
     const [error, setError] = useState("");
     const [submitting, setSubmitting] = useState(false);
     const [success, setSuccess] = useState("");
+    const initialValues = { name: "", email: "", phone_number: "", package: "", sessions_count: 0 };
+    const { formValue, setFormValue, makeHandleChange } = useFormFields(initialValues);
 
     useEffect(() => {
         if (success) {
@@ -15,17 +17,6 @@ function CreateClientForm({onClientCreated}) {
             return () => clearTimeout(timer);
       }
     }, [success]);
-    
-function makeHandleChange(field) {
-  return function (event) {
-    const value = event.target.value;
-
-    setFormValue((prevFormValue) => ({
-      ...prevFormValue,
-      [field]: value,
-    }));
-  };
-}
 
     async function handleSubmit(event) {
         event.preventDefault();
