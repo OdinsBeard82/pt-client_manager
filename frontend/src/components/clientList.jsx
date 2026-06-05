@@ -63,6 +63,15 @@ function ClientList() {
       )}
     </div>
   );
+
+
+  function handleClientUpdate(updatedClient) {
+    setClients((prevClients) =>
+        prevClients.map((client) =>
+            client.id === updatedClient.id ? updatedClient : client
+    )
+  );
+}
   
 }
 export default ClientList;
