@@ -42,6 +42,14 @@ function ClientList() {
         setError(error.message || "Failed to delete client")
     }
 }
+
+  function handleClientUpdate(updatedClient) {
+    setClients((prevClients) =>
+      prevClients.map((client) =>
+        client.id === updatedClient.id ? updatedClient : client
+      )
+    );
+  }
         
   if (loading) {
     return <p>Loading...</p>;
@@ -57,21 +65,12 @@ function ClientList() {
       ) : (
         <ul>
           {clients.map((client) => (
-            <ClientItem onDelete = {handleDeleteClient} key={client.id} client = {client}></ClientItem>
+            <ClientItem onDelete = {handleDeleteClient} onClientUpdated={handleClientUpdate} key={client.id} client = {client}></ClientItem>
           ))}
         </ul>
       )}
     </div>
   );
-
-
-  function handleClientUpdate(updatedClient) {
-    setClients((prevClients) =>
-        prevClients.map((client) =>
-            client.id === updatedClient.id ? updatedClient : client
-    )
-  );
-}
   
 }
 export default ClientList;
